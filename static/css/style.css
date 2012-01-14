@@ -1,0 +1,7 @@
+* { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+table { border-spacing: 0; width: 100%; }
+td,th { font-size: 9pt; padding: 5px; }
+.operational td { background-color: #85D085; }
+.errors td { background-color: #FFFCA3; }
+.distressed td { background-color: #FFA3A3; }
+a { color: #000; }
