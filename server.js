@@ -36,12 +36,19 @@ telemetryStatus.updateStatus = function update_status(iter) {
     if (! iter) iter = 0;
     var host = telemetryStatus.hosts[iter];
     if (host !== undefined) {
-        request.get(host).end(function(err, res) {
+        request.get(host)
+        .on('error', function(err) { 
+            telemetryStatus.status[host] = {
+                status: err.message,
+                last_update: new Date()
+            };
+        })
+        .end(function(err, res) {
             if (typeof res !== "object" || res.body.status === undefined) {
                 telemetryStatus.status[host] = {
-                    status: "Host not available"
+                    status: "Host not available",
+                    last_update: new Date()
                 };
-                telemetryStatus.status[host].last_update = new Date();
             } else {
                 telemetryStatus.status[host] = res.body;
                 telemetryStatus.status[host].last_update = new Date();
