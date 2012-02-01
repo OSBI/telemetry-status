@@ -7,7 +7,7 @@ var app = express.createServer();
 global.telemetryStatus = {};
 telemetryStatus.status = {};
 telemetryStatus.hostsFile = process.env.TELEMETRY_STATUS_HOSTS || __dirname + "/hosts";
-telemetryStatus.refreshRate = process.env.TELEMETRY_STATUS_REFRESH || 5000;
+telemetryStatus.refreshRate = process.env.TELEMETRY_STATUS_REFRESH || 1000;
 telemetryStatus.port = process.argv[2] || 8000;
 
 // Update hosts on hosts file change
@@ -36,6 +36,7 @@ telemetryStatus.updateStatus = function update_status(iter) {
     if (! iter) iter = 0;
     var host = telemetryStatus.hosts[iter];
     if (host !== undefined) {
+        var a = new Date();
         request.get(host)
         .on('error', function(err) { 
             telemetryStatus.status[host] = {
@@ -52,6 +53,7 @@ telemetryStatus.updateStatus = function update_status(iter) {
             } else {
                 telemetryStatus.status[host] = res.body;
                 telemetryStatus.status[host].last_update = new Date();
+                telemetryStatus.status[host].response_time = (new Date()) - a;
             }
         });
         telemetryStatus.updateStatus(iter + 1);

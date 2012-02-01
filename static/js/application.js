@@ -23,7 +23,7 @@ var telemetryStatus = {
                 } else {
                     $("<td>None</td>").appendTo($row);
                 }
-                $("<td>" + host.last_update + "</td>").appendTo($row);
+                $("<td>" + host.last_update + " (" + host.response_time + "ms)</td>").appendTo($row);
             }
         });
     },
